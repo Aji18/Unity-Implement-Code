@@ -1,0 +1,10 @@
+namespace
+-pengkategorian dalam pemrograman c#, contohnya kita punya satu kategori script yang terdiri dari beberapa class yang saling berkaitan
+
+MonoBehaviour
+-script dasar dari unity , ketika memanggil fungsi bawaan dari unity harus ada MonoBehaviour
+
+Perbedaan Update
+-Update: fungsi yang dipanggil tiap detik (fps), dan nilainya berubah-ubah, terus berjalan sampai game berhenti
+-FixedUpdate: hampir sama kayak Update tapi fpsnya tetap
+-LateUpdate : fungsi ini dijalankan setelah fungsi melakukan update semuanya
