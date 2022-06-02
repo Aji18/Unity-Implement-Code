@@ -1,10 +1,25 @@
-namespace
--pengkategorian dalam pemrograman c#, contohnya kita punya satu kategori script yang terdiri dari beberapa class yang saling berkaitan
+Character Controller
+-Itu udah sepaket sama colider , dll
 
 MonoBehaviour
 -script dasar dari unity , ketika memanggil fungsi bawaan dari unity harus ada MonoBehaviour
 
-Perbedaan Update
+namespace
+-pengkategorian dalam pemrograman c#, contohnya kita punya satu kategori script yang terdiri dari beberapa class yang saling berkaitan
+
+TimeScale
+-skala waktu ketika waktu berjalan
+
+Update
 -Update: fungsi yang dipanggil tiap detik (fps), dan nilainya berubah-ubah, terus berjalan sampai game berhenti
 -FixedUpdate: hampir sama kayak Update tapi fpsnya tetap
 -LateUpdate : fungsi ini dijalankan setelah fungsi melakukan update semuanya
+
+Vector3.Lerp
+-Interpolasi, pergerakan berdasarkan kurva dimana a + (b - a) * t.
+delta time = waktu antara frame 1 dengan frame sebelumnya
+transform =  posisi
+transform.forward = yg diambil z dg nilai 1, dan nilai lainnya 0.
+manggil forward kalau ada perpindahan lain seperti rotate, scale
+kalau gak ada langsung saja set x,y,z
+fixed update manggilnya ya fixed deltaTime

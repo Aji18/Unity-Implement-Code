@@ -9,8 +9,8 @@ namespace InfiniteRun
 	{
 		[SerializeField] private GameObject[] tilePrefabs;
 		private float spawnTile = 0;
-		private float tileLength = 20;
-		private int numberOfTile = 3;
+		private const float tileLength = 20;
+		private const int numberOfTile = 3;
 		private List<GameObject> activeTiles = new List<GameObject>();
 
 		[SerializeField]private Transform playerTransform;
@@ -49,8 +49,8 @@ namespace InfiniteRun
 
 		private void SpawnTile(int tileIndex)
 		{
-			GameObject go = Instantiate(tilePrefabs[tileIndex], transform.forward * spawnTile, transform.rotation);
-			activeTiles.Add(go);
+			GameObject tile = Instantiate(tilePrefabs[tileIndex], transform.forward * spawnTile, transform.rotation);
+			activeTiles.Add(tile);
 			spawnTile += tileLength;
 		}
 		

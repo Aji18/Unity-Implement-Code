@@ -2,47 +2,33 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace InfiniteRun
 {
 	public class PlayerController : MonoBehaviour
 	{
-		private CharacterController controller;
-		[SerializeField] private float forwardSpeed = 10f;
+		#region speed
+
+		#endregion
+
+		private const float laneDistance = 2.5f;
 
 		private int desiredLane = 1; //0=left, 1=mid, 2=right
-		[SerializeField] private float laneDistance = 4; //the distance beetwen two lanes
-
-		private Vector3 direction;
-		// Start is called before the first frame update
-		void Start()
-		{
-			controller = GetComponent<CharacterController>();
-		}
+		public Action CrashObject;
+		[SerializeField]private Vector3 forwardSpeed = new Vector3(0,0,10);
+		private const int valueInterpolate = 1;
 
 		private void Update()
 		{
-			direction.z = forwardSpeed;
 
-			if (Input.GetKeyDown(KeyCode.RightArrow))
-			{
-				desiredLane++;
-				if (desiredLane == 3)
-				{
-					desiredLane = 2;
-				}
-			}
-			if (Input.GetKeyDown(KeyCode.LeftArrow))
-			{
-				desiredLane--;
-				if (desiredLane == -1)
-				{
-					desiredLane = 0;
-				}
-			}
+			MovePlayer();
 
+//			Vector3 targetPosition = transform.position.z * transform.forward;
 			Vector3 targetPosition = transform.position.z * transform.forward + transform.position.y * transform.up;
+
+			targetPosition = new Vector3(0, transform.position.y, transform.position.z);
 			if (desiredLane == 0)
 			{
 				targetPosition += Vector3.left * laneDistance;
@@ -52,14 +38,43 @@ namespace InfiniteRun
 				targetPosition += Vector3.right * laneDistance;
 			}
 
-			transform.position =Vector3.Lerp(transform.position,targetPosition,80 *Time.fixedDeltaTime); //targetPosition;
+			transform.position =
+				Vector3.Lerp(transform.position, targetPosition,
+					valueInterpolate * Time.deltaTime); //pergerakan interpolasi;
+		}
+
+		private void MovePlayer()
+		{
+			if (Input.GetKeyDown(KeyCode.RightArrow))
+			{
+				desiredLane++;
+				if (desiredLane == 3)
+				{
+					desiredLane = 2;
+				}
+			}
+
+			if (Input.GetKeyDown(KeyCode.LeftArrow))
+			{
+				desiredLane--;
+				if (desiredLane == -1)
+				{
+					desiredLane = 0;
+				}
+			}
+
+			//desiredLane = Mathf.Clamp(desiredLane, 0, 2);
 		}
 
 		private void FixedUpdate()
 		{
-			controller.Move(direction * Time.fixedDeltaTime);
+			transform.position += (forwardSpeed * Time.fixedDeltaTime);
 		}
-		
-		
+
+		private void OnTriggerEnter(Collider other)
+		{
+			Debug.Log(gameObject.name + " " + other.name);
+			CrashObject?.Invoke();
+		}
 	}
 }
