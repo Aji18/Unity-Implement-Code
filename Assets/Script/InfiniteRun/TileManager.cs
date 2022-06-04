@@ -8,7 +8,7 @@ namespace InfiniteRun
 	public class TileManager : MonoBehaviour
 	{
 		[SerializeField] private GameObject[] tilePrefabs;
-		private float spawnTile = 0;
+		public float spawnTile = 0;
 		private const float tileLength = 20;
 		private const int numberOfTile = 3;
 		private List<GameObject> activeTiles = new List<GameObject>();
@@ -47,12 +47,11 @@ namespace InfiniteRun
 			activeTiles.RemoveAt(0);
 		}
 
-		private void SpawnTile(int tileIndex)
+		public void SpawnTile(int tileIndex)
 		{
 			GameObject tile = Instantiate(tilePrefabs[tileIndex], transform.forward * spawnTile, transform.rotation);
 			activeTiles.Add(tile);
 			spawnTile += tileLength;
 		}
-		
 	}
 }

@@ -16,6 +16,8 @@ namespace InfiniteRun
 		[SerializeField] private GameObject TextGameOver;
 		[SerializeField] private GameObject ButtonRestart;
 		[SerializeField] private PlayerController playerController;
+		[SerializeField] private TileManager _tileManager;
+		[SerializeField] private GameObject player;
 		private int live = 3;
 		private bool isPause = true;
 
@@ -54,7 +56,14 @@ namespace InfiniteRun
 
 		public void RestartGame()
 		{
-			SceneManager.LoadScene( SceneManager.GetActiveScene().name );
+			//SceneManager.LoadScene( SceneManager.GetActiveScene().name );
+			_tileManager.spawnTile = 0;
+			player.transform.position = new Vector3(0, 1.063f, 0);
+			live = 3;
+			TextGameOver.SetActive(false);
+			ButtonRestart.SetActive(false);
+			isPause = false;
+			playerController.desiredLane = 1;
 			Time.timeScale = 1;
 		}
 	}

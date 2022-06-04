@@ -14,12 +14,31 @@ Update
 -Update: fungsi yang dipanggil tiap detik (fps), dan nilainya berubah-ubah, terus berjalan sampai game berhenti
 -FixedUpdate: hampir sama kayak Update tapi fpsnya tetap
 -LateUpdate : fungsi ini dijalankan setelah fungsi melakukan update semuanya
+-fixed update manggilnya ya fixed deltaTime
+
+Vector 3 adalah yg memiliki nilai x,y,z
 
 Vector3.Lerp
 -Interpolasi, pergerakan berdasarkan kurva dimana a + (b - a) * t.
 delta time = waktu antara frame 1 dengan frame sebelumnya
-transform =  posisi
-transform.forward = yg diambil z dg nilai 1, dan nilai lainnya 0.
-manggil forward kalau ada perpindahan lain seperti rotate, scale
-kalau gak ada langsung saja set x,y,z
-fixed update manggilnya ya fixed deltaTime
+
+Transform
+-transform itu yg memiliki nilai dari position, rotation dan scale
+-transform =  posisi
+-transform.forward = yg diambil z dg nilai 1, dan nilai lainnya 0.
+-manggil forward kalau ada perpindahan lain seperti rotate, scale
+-kalau gak ada langsung saja set x,y,z
+
+04 Juni 2022
+Restart
+-konsepnya bukan manggil scene lagi. Tapi gmn caranya kita bisa set semua yg ada didalam game ke posisi awal. 
+dengan bikin restart kita bisa tahu seperti apa kodingan kita.
+cari restart di Internet gak ketemu soalnya restart terganting dari game yg dibikin
+
+-function yang set posisi ke awal
+
+Parse - menguraikan fungsi untuk dipanggil lebih detail.
+FindObjectWithTag = mencari object dengan tag tertentu
+tapi kayaknya pakai ini mahal, coba cari cara yg lain, 
+
+

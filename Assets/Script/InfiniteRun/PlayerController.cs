@@ -15,7 +15,7 @@ namespace InfiniteRun
 
 		private const float laneDistance = 2.5f;
 
-		private int desiredLane = 1; //0=left, 1=mid, 2=right
+		public int desiredLane = 1; //0=left, 1=mid, 2=right
 		public Action CrashObject;
 		[SerializeField]private Vector3 forwardSpeed = new Vector3(0,0,10);
 		private const int valueInterpolate = 1;
