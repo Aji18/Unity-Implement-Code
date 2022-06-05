@@ -3,20 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace MemoryGamePairing
 {
 	public class CardGameController : MonoBehaviour
 	{
-		[SerializeField] private Sprite cardImage;
-		[SerializeField] private Sprite[] puzzles;
-		[SerializeField] private GameObject cardObjek;
+		[SerializeField] private Sprite backCardImage;
+		[SerializeField] private Sprite[] cardForPuzzles;
+		//[SerializeField] private GameObject cardObjek;
 		
 		[SerializeField] private List<Button> cardsButton = new List<Button>();
 		[SerializeField] private List<Sprite> spriteCard = new List<Sprite>();
 
-		private bool firstCard;
-		private bool secondCard;
+		[SerializeField] private GameObject textDone;
+		[SerializeField] private GameObject buttonRestart;
+
+		private bool firstGuess;
+		private bool secondGuess;
 
 		private int countGuesses;
 		private int countCorrectGuesses;
@@ -30,14 +34,17 @@ namespace MemoryGamePairing
 
 		void Start()
 		{
+			Debug.Log("first guess" + firstGuess);
 			GetButton();
 			AddListeners();
 			AddGamePuzzles();
+			Shuffle(spriteCard);
+			gameGuesses = spriteCard.Count / 2;
 		}
 
 		private void Awake()
 		{
-			puzzles = Resources.LoadAll<Sprite>("");
+			cardForPuzzles = Resources.LoadAll<Sprite>("Sprite/Cards/");
 		}
 
 		private void GetButton()
@@ -45,10 +52,10 @@ namespace MemoryGamePairing
 			//GameObject[] objects = cardObjek[i].GetComponent<GameObject>();
 			GameObject[] objects = GameObject.FindGameObjectsWithTag("a");
 			
-			for (int i = 0; i < 8; i++)
+			for (int i = 0; i < objects.Length; i++)
 			{
 				cardsButton.Add(objects[i].GetComponent<Button>());
-				cardsButton[i].image.sprite = cardImage;
+				cardsButton[i].image.sprite = backCardImage;
 			}
 		}
 
@@ -62,8 +69,7 @@ namespace MemoryGamePairing
 				{
 					index = 0;
 				}
-				
-				spriteCard.Add(puzzles[index]);
+				spriteCard.Add(cardForPuzzles[index]);
 				index++;
 			}
 		}
@@ -76,33 +82,85 @@ namespace MemoryGamePairing
 			}
 		}
 		
-
 		private void SelectCard()
 		{
-			if (firstCard)
+			if (!firstGuess)
 			{
-				firstCard = true;
-				firstGuessIndex =
-					int.Parse(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.name);
+				firstGuess = true;
+				firstGuessIndex = int.Parse(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.name);
 				firsrGuessPuzzle = spriteCard[firstGuessIndex].name;
 				cardsButton[firstGuessIndex].image.sprite = spriteCard[firstGuessIndex];
-			}
-			else if (!secondCard)
+			} 
+			else if (!secondGuess)
 			{
-				secondCard = true;
+				secondGuess = true;
 				secondGuessIndex = int.Parse(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.name);
 				secondGuessPuzzle = spriteCard[secondGuessIndex].name;
 				cardsButton[secondGuessIndex].image.sprite = spriteCard[secondGuessIndex];
-
-				if (firsrGuessPuzzle == secondGuessPuzzle)
-				{
-					Debug.Log("puzzle match");
-				}
-				else
-				{
-					Debug.Log("Puzzle not match");
-				}
+				countGuesses++;
+				Debug.Log(countGuesses);
+				StartCoroutine(CheckIfThePuzzleMatch());
 			}
+			
+		}
+
+		IEnumerator CheckIfThePuzzleMatch()
+		{
+			yield return new WaitForSeconds(1f);
+			if (firsrGuessPuzzle == secondGuessPuzzle)
+			{
+				yield return new WaitForSeconds(0.5f);
+
+				cardsButton[firstGuessIndex].interactable = false;
+				cardsButton[secondGuessIndex].interactable = false;
+
+				//cardsButton[firstGuessIndex].image.color = new Color(0, 0, 0, 0);
+				//cardsButton[secondGuessIndex].image.color = new Color(0, 0, 0, 0);
+				
+				GameFinish();
+			}
+			else
+			{
+				yield return new WaitForSeconds(0.5f);
+				
+				cardsButton[firstGuessIndex].image.sprite = backCardImage;
+				cardsButton[secondGuessIndex].image.sprite = backCardImage;
+			}
+
+			yield return new WaitForSeconds(0.5f);
+			firstGuess = secondGuess = false;
+		}
+
+		private void GameFinish()
+		{
+			countCorrectGuesses++;
+			if (countCorrectGuesses == gameGuesses)
+			{
+				Debug.Log("Game FInished");
+				textDone.SetActive(true);
+				buttonRestart.SetActive(true);
+				cardForPuzzles = null;
+				cardsButton = null;
+				spriteCard = null;
+			}
+		}
+		
+		private void Shuffle(List<Sprite> list)
+		{
+			for (int i = 0; i < list.Count; i++)
+			{
+				Sprite temp = list[i];
+				int randomIndex = Random.Range(i, list.Count);
+				list[i] = list[randomIndex];
+				list[randomIndex] = temp;
+			}
+		}
+
+		public void Restart()
+		{
+			textDone.SetActive(false);
+			buttonRestart.SetActive(false);
+			
 			
 		}
 	}
